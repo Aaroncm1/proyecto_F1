@@ -1,0 +1,203 @@
+/* styles.css */
+
+/* Variables para los colores de la F1 */
+:root {
+    --color-fondo: #15151e; /* Fondo oscuro */
+    --color-texto: #f0f0f0; /* Texto claro */
+    --color-acento: #e10600; /* Rojo F1 */
+    --color-gris: #303030; /* Gris oscuro para bordes y separadores */
+    --color-podio-oro: #ffd700;
+    --color-podio-plata: #c0c0c0;
+    --color-podio-bronce: #cd7f32;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* --- Encabezado y Navegación --- */
+header {
+    background-color: #000000;
+    color: var(--color-texto);
+    padding: 15px 0;
+    border-bottom: px solid var(--color-acento);
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--color-texto);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--color-acento);
+    border-bottom: 2px solid var(--color-acento);
+}
+
+/* --- Contenido Principal --- */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--color-fondo);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    color: var(--color-acento);
+    border-bottom: 2px solid var(--color-gris);
+    padding-bottom: 10px;
+    margin-top: 30px;
+    text-transform: uppercase;
+}
+
+/* --- Tablas de Clasificación --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 1em;
+    background-color: #282828;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-gris);
+}
+
+th {
+    background-color: var(--color-acento);
+    color: var(--color-texto);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tr:nth-child(even) {
+    background-color: #353535;
+}
+
+tr:hover:not(.p1):not(.p2):not(.p3) {
+    background-color: #444444;
+}
+
+/* --- Estilo de Podio (Top 3) --- */
+
+/* Fila de la posición 1 */
+tr.p1 {
+    background-color: var(--color-podio-oro) !important;
+    color: #000000;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+tr.p1 td {
+    border-color: #000000;
+}
+
+/* Fila de la posición 2 */
+tr.p2 {
+    background-color: var(--color-podio-plata) !important;
+    color: #000000;
+    font-weight: bold;
+}
+
+tr.p2 td {
+    border-color: #000000;
+}
+
+/* Fila de la posición 3 */
+tr.p3 {
+    background-color: var(--color-podio-bronce) !important;
+    color: #000000;
+    font-weight: bold;
+}
+
+tr.p3 td {
+    border-color: #000000;
+}records-f1.html
+
+/* Columna de posición destacada */
+td.posicion {
+    width: 50px;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 1.1em;
+}
+
+/* Selector de Año para la clasificación anual */
+.year-selector {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #282828;
+    border-radius: 5px;
+}
+
+.year-selector label {
+    font-size: 1.1em;
+    margin-right: 10px;
+}
+
+.year-selector select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--color-gris);
+    background-color: #444444;
+    color: var(--color-texto);
+    font-size: 1em;
+}
+/* --- Estilo de Enlaces en Tablas (para pilotos y escuderías) --- */
+
+/* 1. Hace que todos los enlaces dentro de las tablas hereden el color del texto de la fila */
+/* Esto asegura que sean negros en las filas de podio y blancos en las filas oscuras */
+table a {
+    color: inherit; 
+    text-decoration: none; /* Elimina el subrayado por defecto */
+}
+
+/* 2. Regla específica para los enlaces visitados (evita el color púrpura) */
+table a:visited {
+    color: inherit; 
+}
+
+/* 3. Estilo de hover (opcional: para indicar que es un enlace) */
+table a:hover {
+    text-decoration: underline; 
+    opacity: 0.9;
+}
+
+/* 4. Especificidad extra para asegurar que el negro se mantenga en el podio (P1, P2, P3) */
+/* Esta regla asegura que siempre sean negros en el podio, independientemente del navegador */
+tr.p1 a, tr.p2 a, tr.p3 a {
+    color: #000000; 
+}
