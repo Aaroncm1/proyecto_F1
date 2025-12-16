@@ -12,9 +12,9 @@
         <nav>
             <ul>
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="clasificacion-pilotos-anual.html">Clasificación Anual (2025-2000)</a></li>
-                <li><a href="clasificacion-historica.html">Clasificaciones Históricas</a></li>
-                <li><a href="records-f1.html">Récords de la F1</a></li>
+                <li><a href="clasificacion-pilotos-anual.html">Clasificación Anual</a></li>
+                <li><a href="clasificacion-historica.html">Pilotos Históricos</a></li>
+                <li><a href="clasificacion-constructores.html">Constructores Históricos</a></li> <li><a href="records-f1.html">Récords de la F1</a></li>
             </ul>
         </nav>
     </header>
@@ -22,53 +22,89 @@
     <div class="container">
         <h2>⏱️ Récords Históricos de la Fórmula 1</h2>
         
-        <table>
-            <thead>
-                <tr>
-                    <th>Récord</th>
-                    <th>Valor</th>
-                    <th>Piloto / Equipo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Más Victorias (Carreras)</td>
-                    <td>103</td>
-                    <td>Lewis Hamilton</td>
-                </tr>
-                <tr>
-                    <td>Más Pole Positions</td>
-                    <td>104</td>
-                    <td>Lewis Hamilton</td>
-                </tr>
-                <tr>
-                    <td>Más Podios</td>
-                    <td>197</td>
-                    <td>Lewis Hamilton</td>
-                </tr>
-                <tr>
-                    <td>Más Campeonatos de Pilotos</td>
-                    <td>7</td>
-                    <td>Michael Schumacher y Lewis Hamilton</td>
-                </tr>
-                <tr>
-                    <td>Más Victorias en una Temporada</td>
-                    <td>19</td>
-                    <td>Max Verstappen (2023)</td>
-                </tr>
-                <tr>
-                    <td>Mayor Diferencia de Puntos (Campeón)</td>
-                    <td>290 (2023)</td>
-                    <td>Max Verstappen</td>
-                </tr>
-                <tr>
-                    <td>Piloto Más Joven en Ganar una Carrera</td>
-                    <td>18 años, 228 días</td>
-                    <td>Max Verstappen</td>
-                </tr>
-            </tbody>
-        </table>
-        
+        <div class="records-grid">
+            <div class="record-card">
+                <img src="https://img2.51gt3.com/rac/racer/202503/0ff8ae7649b447bd8e023f4e31dc4042.png?x-oss-process=style/_nowm" alt="Lewis Hamilton">
+                <div class="record-info">
+                    <p class="pilot-name">LEWIS HAMILTON</p>
+                    <ul class="record-list">
+                        <li><strong>Más Victorias:</strong> 103</li>
+                        <li><strong>Más Pole Positions:</strong> 104</li>
+                        <li><strong>Más Podios:</strong> 197</li>
+                        <li><strong>Campeonatos del Mundo:</strong> 7</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="record-card">
+                <img src="https://acnews.blob.core.windows.net/imgnews/extralarge/NAZ_75b8f469218e4be3824ee4120854cf69.jpg" alt="Max Verstappen">
+                <div class="record-info">
+                    <p class="pilot-name">MAX VERSTAPPEN</p>
+                    <ul class="record-list">
+                        <li><strong>Victorias en una Temporada:</strong> 19 (2023)</li>
+                        <li><strong>Mayor Diferencia de Puntos:</strong> 290 (2023)</li>
+                        <li><strong>Ganador más joven:</strong> 18 años, 228 días</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="record-card">
+                <img src="http://www.channel4.com/media/images/Channel4/c4-news/2013/Dec/29/29_schumacher_g_w.jpg" alt="Michael Schumacher">
+                <div class="record-info">
+                    <p class="pilot-name">MICHAEL SCHUMACHER</p>
+                    <ul class="record-list">
+                        <li><strong>Campeonatos del Mundo:</strong> 7</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="record-card">
+                <img src="https://hips.hearstapps.com/hmg-prod/images/gettyimages-600969539-1584256651.jpg?crop=1.00xw:0.698xh;0,0.0317xh" alt="Ayrton Senna">
+                <div class="record-info">
+                    <p class="pilot-name">AYRTON SENNA</p>
+                    <ul class="record-list">
+                        <li><strong>Victorias seguidas en un mismo GP:</strong> 5 (Mónaco)</li>
+                        <li><strong>Pole Positions consecutivas:</strong> 8</li>
+                        <li><strong>Total Victorias en Mónaco:</strong> 6</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="record-card">
+                <img src="https://d1gl66oyi6i593.cloudfront.net/wp-content/uploads/2020/05/Sebatian-Vettel-no-continuara-Ferrari-2021-1068x711.jpg" alt="Sebastian Vettel">
+                <div class="record-info">
+                    <p class="pilot-name">SEBASTIAN VETTEL</p>
+                    <ul class="record-list">
+                        <li><strong>Campeón del Mundo más joven:</strong> 23 años</li>
+                        <li><strong>Más Victorias consecutivas:</strong> 9</li>
+                        <li><strong>Más Poles en una temporada:</strong> 15</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="record-card">
+                <img src="https://formularapida.net/wp-content/uploads/2020/07/alo_oficial-renault.jpg" alt="Fernando Alonso">
+                <div class="record-info">
+                    <p class="pilot-name">FERNANDO ALONSO</p>
+                    <ul class="record-list">
+                        <li><strong>Más Grandes Premios disputados:</strong> +380</li>
+                        <li><strong>Más Km recorridos en F1:</strong> +100k</li>
+                        <li><strong>Mayor longevidad en activo:</strong> 20+ años</li>
+                    </ul>
+                </div>
+            </div>
+    
+            <div class="record-card">
+                <img src="https://hips.hearstapps.com/es.h-cdn.co/cades/contenidos/50806/logo_red_bull_2018.jpg" alt="Red Bull Pit Stop">
+                <div class="record-info">
+                    <p class="pilot-name">RED BULL RACING</p>
+                    <ul class="record-list">
+                        <li><strong>Pit Stop más rápido:</strong> 1.82 segundos</li>
+                        <li><strong>Más victorias seguidas (Equipo):</strong> 15</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
