@@ -194,3 +194,16 @@ tr.p3 { background-color: var(--color-podio-bronce) !important; font-weight: bol
     margin: 50px 0;
     opacity: 0.5;
 }
+
+/* Quitar el color azul y el subrayado de los enlaces en las tablas */
+table td a {
+    color: #000000; /* Color negro puro */
+    text-decoration: none; /* Quita la línea de debajo */
+    font-weight: bold; /* Para que resalten un poco ya que son enlaces */
+}
+
+/* Opcional: Que se pongan rojos cuando pases el ratón por encima */
+table td a:hover {
+    color: var(--color-acento);
+    text-decoration: underline;
+}
