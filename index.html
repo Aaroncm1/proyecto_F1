@@ -20,9 +20,73 @@
     </header>
 
     <div class="container">
-        <h2>Bienvenido a la Central de Estadísticas de F1</h2>
-        <p>Selecciona una opción del menú superior para ver las clasificaciones detalladas. El estilo que ves ha sido diseñado para evocar la emoción de la Fórmula 1, destacando los tres primeros puestos con los colores del podio.</p>
-        <p>Esta página te permite navegar fácilmente entre las clasificaciones anuales y los récords históricos.</p>
+        <div class="hero-section" style="text-align: center; padding: 40px 20px; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1504454663591-12631df35bbf?auto=format&fit=crop&w=1200') no-repeat center; color: white; border-radius: 8px; margin-bottom: 30px;">
+            <h2 style="font-size: 2.5em; margin-bottom: 10px;">¡Bienvenido a F1 RACING Stats!</h2>
+            <p style="font-size: 1.2em;">Explora la historia, los datos y las leyendas de la Fórmula 1.</p>
+        </div>
+
+        <div class="records-grid">
+            <div class="record-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Drivers%27_World_Championship_trophy_2004_replica_front1_2019_Michael_Schumacher_Private_Collection.jpg/250px-Drivers%27_World_Championship_trophy_2004_replica_front1_2019_Michael_Schumacher_Private_Collection.jpg" alt="Temporada Actual">
+                <div class="record-info">
+                    <p class="pilot-name">CLASIFICACIÓN ANUAL</p>
+                    <p>Resultados detallados desde el año 2000 hasta la actualidad.</p>
+                    <a href="clasificacion-pilotos-anual.html" class="btn-nav" style="display:inline-block; margin-top:10px; background:var(--color-acento); color:white; padding:8px 15px; text-decoration:none; border-radius:5px;">Ver Temporadas</a>
+                </div>
+            </div>
+
+            <div class="record-card">
+                <img src="https://s3.sportstatics.com/relevo/www/multimedia/202503/17/media/cortadas/fernando-alonso-RQGrF2opqvQbC8ikz0IGCnM-1200x648@Relevo.JPG?w=569&h=320" alt="Leyendas F1">
+                <div class="record-info">
+                    <p class="pilot-name">PILOTOS HISTÓRICOS</p>
+                    <p>Los reyes del asfalto: conoce a los pilotos con más títulos mundiales.</p>
+                    <a href="clasificacion-historica.html" class="btn-nav" style="display:inline-block; margin-top:10px; background:var(--color-acento); color:white; padding:8px 15px; text-decoration:none; border-radius:5px;">Ver Leyendas</a>
+                </div>
+            </div>
+
+            <div class="record-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/MotorExpo_2014_MMB_07_Formula_One_Constructors%27_Trophy.jpg/250px-MotorExpo_2014_MMB_07_Formula_One_Constructors%27_Trophy.jpg" alt="Escuderías">
+                <div class="record-info">
+                    <p class="pilot-name">CONSTRUCTORES</p>
+                    <p>Las fábricas de sueños. Ferrari, McLaren, Mercedes y más.</p>
+                    <a href="clasificacion-constructores.html" class="btn-nav" style="display:inline-block; margin-top:10px; background:var(--color-acento); color:white; padding:8px 15px; text-decoration:none; border-radius:5px;">Ver Equipos</a>
+                </div>
+            </div>
+
+            <div class="record-card">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Guinness_World_Records_logo.svg/960px-Guinness_World_Records_logo.svg.png?20230519150850" alt="Records">
+                <div class="record-info">
+                    <p class="pilot-name">RÉCORDS MUNDIALES</p>
+                    <p>Pit stops, vueltas rápidas y los datos más locos de la historia.</p>
+                    <a href="records-f1.html" class="btn-nav" style="display:inline-block; margin-top:10px; background:var(--color-acento); color:white; padding:8px 15px; text-decoration:none; border-radius:5px;">Ver Récords</a>
+                </div>
+            </div>
+        </div>
+        <footer style="background-color: #15151e; color: white; padding: 40px 20px; margin-top: 50px; text-align: center; border-top: 4px solid var(--color-acento);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: var(--color-acento); margin-bottom: 10px;">F1 RACING Stats</h3>
+                <p style="font-size: 0.9em; color: #ccc;">Tu portal de estadísticas históricas y resultados en tiempo real.</p>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <p style="font-weight: bold; margin-bottom: 15px;">ENLACES OFICIALES:</p>
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <a href="https://www.formula1.com" target="_blank" style="color: white; text-decoration: none; background: #333; padding: 10px 20px; border-radius: 4px; transition: 0.3s;">Página Oficial F1</a>
+                    <a href="https://www.fia.com" target="_blank" style="color: white; text-decoration: none; background: #333; padding: 10px 20px; border-radius: 4px; transition: 0.3s;">Sitio FIA</a>
+                    <a href="https://www.instagram.com/f1/" target="_blank" style="color: white; text-decoration: none; background: #333; padding: 10px 20px; border-radius: 4px; transition: 0.3s;">Instagram F1</a>
+                    <a href="https://www.facebook.com/Formula1/?locale=es_LA" target="_blank" style="color: white; text-decoration: none; background: #333; padding: 10px 20px; border-radius: 4px; transition: 0.3s;">Facebook F1</a>
+                    <a href="https://x.com/F1?lang=es" target="_blank" style="color: white; text-decoration: none; background: #333; padding: 10px 20px; border-radius: 4px; transition: 0.3s;">Twitter/x F1</a>
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+            
+            <p style="font-size: 0.8em; color: #888;">
+                &copy; 2025 F1 RACING Stats. Este sitio es un proyecto educativo y no está afiliado con el grupo de empresas de Formula One.
+            </p>
+        </div>
+    </footer>
     </div>
 </body>
 </html>
