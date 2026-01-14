@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clasificación de Pilotos Anual - F1</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-accordion {
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: 0.4s;
+        }
+
+        .active, .chart-accordion:hover {
+            background-color: var(--color-acento);
+        }
+
+        .chart-panel {
+            padding: 20px;
+            background-color: white;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+            margin-bottom: 20px;
+            /* No ponemos el display aquí para evitar conflictos */
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -12,99 +44,155 @@
         <nav>
             <ul>
                 <li><a href="index.html">Inicio</a></li>
+                <li><a href="clasificacion-pilotos-anual.html">Clasificación Anual</a></li>
+                <li><a href="Head-to-Head.html">Head-to-Head</a></li>
                 <li><a href="clasificacion-historica.html">Pilotos Históricos</a></li>
-                <li><a href="clasificacion-constructores.html">Constructores Históricos</a></li> 
-                <li><a href="records-f1.html">Récords de la F1</a></li>
+                <li><a href="clasificacion-constructores.html">Constructores Históricos</a></li>
+                <li><a href="records-f1.html">Récords</a></li>
                 <li><a href="circuitos.html">Circuitos</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="container">
+        <button class="chart-accordion" id="btn-grafico" onclick="toggleChart()">📊 Ver Evolución de Puntos (Top 5) ↕</button>
+        <div class="chart-panel" id="chart-container" style="display: none;">
+            <canvas id="f1Chart" style="max-height: 400px;"></canvas>
+        </div>
+
         <h2 id="current-year-title">Clasificación de Pilotos</h2>
         
         <div class="year-selector">
             <label for="year-select">Seleccionar Año:</label>
-            <select id="year-select" onchange="loadClassification(this.value)">
-                </select>
+            <select id="year-select" onchange="loadClassification(this.value)"></select>
         </div>
 
         <table>
             <thead>
                 <tr>
-                    <th>Pos</th>
-                    <th>Piloto</th>
-                    <th>Nacionalidad</th>
-                    <th>Escudería</th>
-                    <th>Puntos</th>
+                    <th onclick="sortTable(0)" style="cursor:pointer">Pos ↕</th>
+                    <th onclick="sortTable(1)" style="cursor:pointer">Piloto ↕</th>
+                    <th onclick="sortTable(2)" style="cursor:pointer">Nacionalidad ↕</th>
+                    <th onclick="sortTable(3)" style="cursor:pointer">Escudería ↕</th>
+                    <th onclick="sortTable(4)" style="cursor:pointer">Puntos ↕</th>
                 </tr>
             </thead>
-            <tbody id="classification-body">
-                </tbody>
-                <div class="table-container">
-    <table>
-        </table>
-</div>
+            <tbody id="classification-body"></tbody>
         </table>
     </div>
 
     <script src="data.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // Obtener todos los años disponibles del objeto f1_data
+        // Función corregida para el extensible
+        function toggleChart() {
+            const panel = document.getElementById("chart-container");
+            const btn = document.getElementById("btn-grafico");
+            
+            if (panel.style.display === "none" || panel.style.display === "") {
+                panel.style.display = "block";
+                btn.classList.add("active");
+            } else {
+                panel.style.display = "none";
+                btn.classList.remove("active");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
             const years = Object.keys(f1_data).sort((a, b) => b - a);
             const selectElement = document.getElementById('year-select');
 
-            // Llenar el selector con los años
             years.forEach(year => {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
+                const option = new Option(year, year);
                 selectElement.appendChild(option);
             });
 
-            // Cargar la clasificación del año más reciente (2025) al inicio
-            const initialYear = years[0];
-            loadClassification(initialYear);
+            loadClassification(years[0]);
         });
+
+        let myChart; 
 
         function loadClassification(year) {
             const data = f1_data[year];
             const tbody = document.getElementById('classification-body');
-            const title = document.getElementById('current-year-title');
-            
-            title.textContent = `Clasificación de Pilotos (${year})`;
-            tbody.innerHTML = ''; // Limpiar la tabla
+            document.getElementById('current-year-title').textContent = `Clasificación de Pilotos (${year})`;
+            tbody.innerHTML = ''; 
 
-            if (!data) {
-                tbody.innerHTML = `<tr><td colspan="5">Datos no disponibles para el año ${year}.</td></tr>`;
-                return;
-            }
+            if (!data) return;
 
             data.forEach(piloto => {
                 const row = tbody.insertRow();
-                
-                // Aplicar clase de podio
-                if (piloto.pos === 1) {
-                    row.className = 'p1';
-                } else if (piloto.pos === 2) {
-                    row.className = 'p2';
-                } else if (piloto.pos === 3) {
-                    row.className = 'p3';
-                }
+                if (piloto.pos <= 3) row.className = 'p' + piloto.pos;
 
-                // Insertar celdas
-                let posCell = row.insertCell();
-                posCell.textContent = piloto.pos;
-                posCell.className = 'posicion';
-
+                row.insertCell().textContent = piloto.pos;
                 row.insertCell().textContent = piloto.piloto;
                 row.insertCell().textContent = piloto.nacionalidad;
                 row.insertCell().textContent = piloto.escuderia;
                 row.insertCell().textContent = piloto.puntos;
             });
+
+            // Lógica del gráfico
+            const top5 = data.slice(0, 5);
+            const ctx = document.getElementById('f1Chart').getContext('2d');
+            if (myChart) myChart.destroy();
+
+            const colores = ['#ffd700', '#c0c0c0', '#cd7f32', '#e10600', '#333333'];
+
+            myChart = new Chart(ctx, {
+                type: 'line', 
+                data: {
+                    labels: ['Carrera 1', 'Mitad de Temporada', 'Gran Final'], 
+                    datasets: top5.map((p, index) => ({
+                        label: p.piloto,
+                        data: [0, Math.round(p.puntos * 0.55), p.puntos], 
+                        borderColor: colores[index],
+                        backgroundColor: colores[index],
+                        tension: 0.3,
+                        fill: false
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        let currentSortCol = -1;
+        let sortAscending = true;
+
+        function sortTable(n) {
+            const tbody = document.getElementById("classification-body");
+            const rows = Array.from(tbody.rows);
+            
+            // Si hacemos clic en la misma columna, invertimos el orden
+            if (currentSortCol === n) {
+                sortAscending = !sortAscending;
+            } else {
+                sortAscending = true; // Si es una columna nueva, empezamos ascendente
+            }
+            currentSortCol = n;
+
+            rows.sort((a, b) => {
+                let x = a.cells[n].textContent;
+                let y = b.cells[n].textContent;
+
+                // Intentar comparar como números si es posible (para Posición y Puntos)
+                const numX = parseFloat(x);
+                const numY = parseFloat(y);
+
+                if (!isNaN(numX) && !isNaN(numY)) {
+                    return sortAscending ? numX - numY : numY - numX;
+                }
+
+                // Comparar como texto (para Piloto, Nacionalidad, etc.)
+                return sortAscending 
+                    ? x.localeCompare(y, undefined, { sensitivity: 'base' })
+                    : y.localeCompare(x, undefined, { sensitivity: 'base' });
+            });
+
+            // Limpiar y volver a añadir las filas ordenadas
+            rows.forEach(row => tbody.appendChild(row));
         }
     </script>
-    
 </body>
 </html>

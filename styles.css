@@ -185,6 +185,10 @@ tr.p3 { background-color: var(--color-podio-bronce) !important; font-weight: bol
         grid-template-columns: 1fr; /* 1 sola columna en móviles */
     }
 }
+@media (max-width: 768px) {
+    nav ul { flex-direction: column; }
+    table { display: block; overflow-x: auto; }
+}
 
 /* Divisor de secciones */
 .section-divider {
@@ -206,4 +210,24 @@ table td a {
 table td a:hover {
     color: var(--color-acento);
     text-decoration: underline;
+}
+th:hover {
+    background-color: #b00500; /* Un rojo más oscuro al pasar el ratón */
+    transition: 0.3s;
+}
+
+th::after {
+    content: " ↕";
+    font-size: 0.8em;
+    opacity: 0.5;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
 }

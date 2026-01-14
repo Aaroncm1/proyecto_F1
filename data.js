@@ -1,6 +1,20 @@
 // data.js
 // Contiene la clasificación final de pilotos para las temporadas 2000 a 2025.
+// SECCIÓN ESPECIAL: Estadísticas de Carrera (Career Totals)
+const PILOTOS_HISTORICOS = {
+    "Lewis Hamilton": { victorias: 105, poles: 104, puntos: 4850, titulos: 7, nacionalidad: "Reino Unido", escuderia: "Mercedes" },
+    "Michael Schumacher": { victorias: 91, poles: 68, puntos: 1566, titulos: 7, nacionalidad: "Alemania", escuderia: "Ferrari" },
+    "Max Verstappen": { victorias: 71, poles: 48, puntos: 3012, titulos: 4, nacionalidad: "Países Bajos", escuderia: "Red Bull Racing" },
+    "Sebastian Vettel": { victorias: 53, poles: 57, puntos: 3098, titulos: 4, nacionalidad: "Alemania", escuderia: "Red Bull / Aston Martin" },
+    "Alain Prost": { victorias: 51, poles: 33, puntos: 798, titulos: 4, nacionalidad: "Francia", escuderia: "McLaren / Williams" },
+    "Ayrton Senna": { victorias: 41, poles: 65, puntos: 614, titulos: 3, nacionalidad: "Brasil", escuderia: "McLaren" },
+    "Fernando Alonso": { victorias: 32, poles: 22, puntos: 2350, titulos: 2, nacionalidad: "España", escuderia: "Aston Martin / Renault" },
+    "Nigel Mansell": { victorias: 31, poles: 32, puntos: 482, titulos: 1, nacionalidad: "Reino Unido", escuderia: "Williams" },
+    "Niki Lauda": { victorias: 25, poles: 24, puntos: 420, titulos: 3, nacionalidad: "Austria", escuderia: "Ferrari / McLaren" },
+    "Jim Clark": { victorias: 25, poles: 33, puntos: 274, titulos: 2, nacionalidad: "Reino Unido", escuderia: "Lotus" }
+};
 
+    // ... aquí sigue el resto de tu código original ...
 const f1_data = {
     // -------------------------------------------------------------------
     // 2025 (Simulado/Actual)
@@ -12,7 +26,7 @@ const f1_data = {
         {pos: 4, piloto: "Lewis Hamilton", nacionalidad: "Reino Unido", escuderia: "Mercedes", puntos: 250},
         {pos: 5, piloto: "George Russell", nacionalidad: "Reino Unido", escuderia: "Mercedes", puntos: 200},
         {pos: 6, piloto: "Oscar Piastri", nacionalidad: "Australia", escuderia: "McLaren", puntos: 180},
-        {pos: 7, piloto: "Carlos Sainz", nacionalidad: "España", escuderia: "Williams", puntos: 150},
+        {pos: 7, piloto: "Carlos Sainz", nacionalidad: "España", escuderia: "Ferrari", puntos: 150},
         {pos: 8, piloto: "Sergio Pérez", nacionalidad: "México", escuderia: "Red Bull Racing", puntos: 120},
         {pos: 9, piloto: "Fernando Alonso", nacionalidad: "España", escuderia: "Aston Martin", puntos: 90},
         {pos: 10, piloto: "Pierre Gasly", nacionalidad: "Francia", escuderia: "Alpine", puntos: 60},
@@ -710,3 +724,32 @@ const f1_data = {
         {pos: 21, piloto: "Jean Alesi", nacionalidad: "Francia", escuderia: "Prost", puntos: 0}
     ]
 };
+let sortDirection = true; // true = ascendente, false = descendente
+
+function sortTable(columnIndex) {
+    const table = document.querySelector("table");
+    const tbody = document.getElementById("classification-body");
+    const rows = Array.from(tbody.rows);
+
+    // Cambiar dirección
+    sortDirection = !sortDirection;
+
+    const sortedRows = rows.sort((a, b) => {
+        let valA = a.cells[columnIndex].textContent.trim();
+        let valB = b.cells[columnIndex].textContent.trim();
+
+        // Si es una columna numérica (Posición o Puntos)
+        if (!isNaN(valA) && !isNaN(valB)) {
+            return sortDirection ? valA - valB : valB - valA;
+        }
+
+        // Si es texto (Piloto, Escudería, etc.)
+        return sortDirection 
+            ? valA.localeCompare(valB) 
+            : valB.localeCompare(valA);
+    });
+
+    // Limpiar y volver a llenar la tabla con el nuevo orden
+    tbody.innerHTML = "";
+    sortedRows.forEach(row => tbody.appendChild(row));
+}
