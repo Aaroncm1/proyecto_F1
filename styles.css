@@ -1,4 +1,4 @@
-/* styles.css - VERSIÓN FINAL RESTAURADA Y CORREGIDA */
+/* styles.css - VERSIÓN FINAL UNIFICADA */
 
 :root {
     --color-fondo: #f7f7f7;     
@@ -31,15 +31,33 @@ body {
     background-color: var(--color-fondo);
     color: var(--color-texto);
     margin: 0;
+    line-height: 1.6;
 }
 
 /* --- QUITAR AZUL DE LOS ENLACES --- */
-a {
+a, a:visited {
     color: inherit !important;
     text-decoration: none;
 }
 
-/* --- CONTENEDOR ESTÁNDAR (Como antes) --- */
+header { 
+    background-color: var(--color-nav-bg); 
+    padding: 20px; 
+    text-align: center; 
+    border-bottom: 3px solid var(--color-acento); 
+}
+
+header h1 { 
+    color: var(--color-acento); 
+    margin: 0; 
+    text-transform: uppercase; 
+    font-size: 2.5em; 
+}
+
+nav ul { list-style: none; padding: 0; margin-top: 15px; }
+nav ul li { display: inline; margin: 0 15px; }
+nav ul li a { font-weight: bold; }
+
 .container {
     width: 90%;
     max-width: 1200px; 
@@ -50,7 +68,7 @@ a {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* --- GRÁFICA (Tamaño equilibrado) --- */
+/* --- GRÁFICA --- */
 .chart-panel {
     width: 100%;
     height: 500px; 
@@ -61,7 +79,7 @@ a {
     margin-bottom: 30px;
 }
 
-/* --- TARJETAS DE INICIO Y CIRCUITOS (RESTAURADAS) --- */
+/* --- TARJETAS (DISEÑO RESTAURADO) --- */
 .records-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -82,19 +100,18 @@ a {
 
 .record-card img {
     width: 100%;
-    height: 250px; /* Altura original de tus primeras fotos */
+    height: 250px; 
     object-fit: cover;
     border-bottom: 4px solid var(--color-acento);
 }
 
 .record-info { padding: 15px; }
 
-/* --- TABLAS --- */
+/* --- TABLAS Y PODIO --- */
 table { width: 100%; border-collapse: collapse; margin-top: 25px; }
 th { background-color: var(--color-acento); color: white; padding: 12px; }
 td { padding: 12px; border-bottom: 1px solid var(--color-gris); color: var(--color-texto); }
 
-/* --- COLORES PODIO --- */
 tr.p1 { background-color: var(--color-podio-oro) !important; color: black !important; }
 tr.p2 { background-color: var(--color-podio-plata) !important; color: black !important; }
 tr.p3 { background-color: var(--color-podio-bronce) !important; color: black !important; }
@@ -103,7 +120,7 @@ tr.p3 { background-color: var(--color-podio-bronce) !important; color: black !im
     color: #fff !important; 
 }
 
-/* --- HEAD TO HEAD (RECUPERANDO EL VERDE) --- */
+/* --- COMPARADOR (VERDE GANADOR) --- */
 .stat-row { 
     margin: 10px 0; 
     padding: 12px; 
@@ -114,22 +131,27 @@ tr.p3 { background-color: var(--color-podio-bronce) !important; color: black !im
 
 [data-theme="dark"] .stat-row { background: #333 !important; }
 
-/* El color verde del ganador */
 .winner {
-    background-color: #e8f5e9 !important; /* Verde claro */
+    background-color: #e8f5e9 !important; 
     border-left: 4px solid #4caf50 !important;
     font-weight: bold;
 }
 
 [data-theme="dark"] .winner {
-    background-color: #1b3d20 !important; /* Verde oscuro para modo noche */
+    background-color: #1b3d20 !important; 
     color: #afffa0 !important;
 }
 
-/* Otros */
-header { background-color: var(--color-nav-bg); padding: 20px; text-align: center; border-bottom: 3px solid var(--color-acento); }
-header h1 { color: var(--color-acento); margin: 0; text-transform: uppercase; font-size: 2.5em; }
-nav ul { list-style: none; padding: 0; margin-top: 15px; }
-nav ul li { display: inline; margin: 0 15px; }
-nav ul li a { font-weight: bold; }
-.theme-switch { position: fixed; bottom: 20px; right: 20px; background: var(--color-acento); color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; z-index: 1000; }
+.theme-switch { 
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    background: var(--color-acento); 
+    color: white; 
+    border: none; 
+    padding: 12px 20px; 
+    border-radius: 50px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    z-index: 1000; 
+}
