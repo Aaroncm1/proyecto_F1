@@ -2,7 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script>
+    // Se ejecuta antes de cargar el body para evitar el flash blanco
+    const savedTheme = localStorage.getItem('f1-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+</script> <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clasificación de Pilotos Anual - F1</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -22,19 +27,13 @@
             margin-bottom: 10px;
             transition: 0.4s;
         }
-
-        .active, .chart-accordion:hover {
-            background-color: var(--color-acento);
-        }
-
+        .active, .chart-accordion:hover { background-color: #e10600; }
         .chart-panel {
             padding: 20px;
-            background-color: white;
-            overflow: hidden;
+            background-color: rgb(241, 241, 241);
             border: 1px solid #ddd;
             border-radius: 0 0 8px 8px;
             margin-bottom: 20px;
-            /* No ponemos el display aquí para evitar conflictos */
         }
     </style>
 </head>
@@ -53,6 +52,21 @@
             </ul>
         </nav>
     </header>
+    <button class="theme-switch" onclick="toggleTheme()">🌓 Cambiar Modo</button>
+
+    <script>
+        function toggleTheme() {
+            const doc = document.documentElement;
+            const currentTheme = doc.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Aplicar el tema
+            doc.setAttribute('data-theme', newTheme);
+            
+            // Guardar la elección para todas las páginas
+            localStorage.setItem('f1-theme', newTheme);
+        }
+    </script>
 
     <div class="container">
         <button class="chart-accordion" id="btn-grafico" onclick="toggleChart()">📊 Ver Evolución de Puntos (Top 5) ↕</button>
@@ -83,34 +97,25 @@
 
     <script src="data.js"></script>
     <script>
-        // Función corregida para el extensible
         function toggleChart() {
             const panel = document.getElementById("chart-container");
             const btn = document.getElementById("btn-grafico");
-            
-            if (panel.style.display === "none" || panel.style.display === "") {
-                panel.style.display = "block";
-                btn.classList.add("active");
-            } else {
-                panel.style.display = "none";
-                btn.classList.remove("active");
-            }
+            panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
+            btn.classList.toggle("active");
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            if (typeof f1_data === 'undefined') return;
             const years = Object.keys(f1_data).sort((a, b) => b - a);
             const selectElement = document.getElementById('year-select');
-
             years.forEach(year => {
                 const option = new Option(year, year);
                 selectElement.appendChild(option);
             });
-
             loadClassification(years[0]);
         });
 
         let myChart; 
-
         function loadClassification(year) {
             const data = f1_data[year];
             const tbody = document.getElementById('classification-body');
@@ -119,10 +124,10 @@
 
             if (!data) return;
 
+            // Rellenar tabla (esto ya lo tienes)
             data.forEach(piloto => {
                 const row = tbody.insertRow();
                 if (piloto.pos <= 3) row.className = 'p' + piloto.pos;
-
                 row.insertCell().textContent = piloto.pos;
                 row.insertCell().textContent = piloto.piloto;
                 row.insertCell().textContent = piloto.nacionalidad;
@@ -130,20 +135,27 @@
                 row.insertCell().textContent = piloto.puntos;
             });
 
-            // Lógica del gráfico
+            // --- LÓGICA DEL GRÁFICO ---
             const top5 = data.slice(0, 5);
             const ctx = document.getElementById('f1Chart').getContext('2d');
             if (myChart) myChart.destroy();
 
             const colores = ['#ffd700', '#c0c0c0', '#cd7f32', '#e10600', '#333333'];
 
+            // AQUÍ VAN LAS LÍNEAS QUE PREGUNTABAS:
+            const tieneEvolucion = top5[0] && top5[0].evolucion;
+            const totalCarreras = tieneEvolucion ? top5[0].evolucion.length : 1;
+            const labels = tieneEvolucion 
+                ? Array.from({length: totalCarreras}, (_, i) => `GP ${i + 1}`)
+                : ['Final'];
+
             myChart = new Chart(ctx, {
                 type: 'line', 
                 data: {
-                    labels: ['Carrera 1', 'Mitad de Temporada', 'Gran Final'], 
+                    labels: labels, 
                     datasets: top5.map((p, index) => ({
                         label: p.piloto,
-                        data: [0, Math.round(p.puntos * 0.55), p.puntos], 
+                        data: p.evolucion || [p.puntos], 
                         borderColor: colores[index],
                         backgroundColor: colores[index],
                         tension: 0.3,
@@ -151,46 +163,23 @@
                     }))
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
+    responsive: true,
+    maintainAspectRatio: false // ESTO ES CLAVE para que use los 700px de altura del CSS
+}
             });
-        }
-
-        let currentSortCol = -1;
-        let sortAscending = true;
+        } // Fin de la función
+     // <--- AQUÍ SE CIERRA loadClassification
 
         function sortTable(n) {
             const tbody = document.getElementById("classification-body");
             const rows = Array.from(tbody.rows);
-            
-            // Si hacemos clic en la misma columna, invertimos el orden
-            if (currentSortCol === n) {
-                sortAscending = !sortAscending;
-            } else {
-                sortAscending = true; // Si es una columna nueva, empezamos ascendente
-            }
-            currentSortCol = n;
+            let ascending = this.asc = !this.asc;
 
             rows.sort((a, b) => {
                 let x = a.cells[n].textContent;
                 let y = b.cells[n].textContent;
-
-                // Intentar comparar como números si es posible (para Posición y Puntos)
-                const numX = parseFloat(x);
-                const numY = parseFloat(y);
-
-                if (!isNaN(numX) && !isNaN(numY)) {
-                    return sortAscending ? numX - numY : numY - numX;
-                }
-
-                // Comparar como texto (para Piloto, Nacionalidad, etc.)
-                return sortAscending 
-                    ? x.localeCompare(y, undefined, { sensitivity: 'base' })
-                    : y.localeCompare(x, undefined, { sensitivity: 'base' });
+                return isNaN(x) ? x.localeCompare(y) * (ascending ? 1 : -1) : (x - y) * (ascending ? 1 : -1);
             });
-
-            // Limpiar y volver a añadir las filas ordenadas
             rows.forEach(row => tbody.appendChild(row));
         }
     </script>

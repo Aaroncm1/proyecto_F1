@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Se ejecuta antes de cargar el body para evitar el flash blanco
+        const savedTheme = localStorage.getItem('f1-theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
     <title>Circuitos F1 | Los 18 Trazados</title>
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -15,9 +20,7 @@
             width: 100%;
         }
         /* Nombres de pilotos en negro */
-        .record-info p strong {
-            color: #000 !important;
-        }
+        
         .pilot-name {
             color: var(--color-acento);
             font-weight: bold;
@@ -42,6 +45,21 @@
             </ul>
         </nav>
     </header>
+    <button class="theme-switch" onclick="toggleTheme()">🌓 Cambiar Modo</button>
+
+    <script>
+        function toggleTheme() {
+            const doc = document.documentElement;
+            const currentTheme = doc.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Aplicar el tema
+            doc.setAttribute('data-theme', newTheme);
+            
+            // Guardar la elección para todas las páginas
+            localStorage.setItem('f1-theme', newTheme);
+        }
+    </script>
 
     <div class="container">
         <h2 style="text-align: center; margin-bottom: 30px;">🏁 Guía de Circuitos y Récords</h2>
@@ -50,7 +68,7 @@
             
             <div class="record-card">
                 <a href="https://www.youtube.com/watch?v=X9xnArvm6wE" target="_blank">
-                <img src="https://formula-timer.com/_next/image?url=%2Fcircuits%2Falbert_park.png&w=1080&q=95" alt="Australia">
+                <img src="https://cdn-5.motorsport.com/images/amp/6D1kveD0/s1000/australian-gp-map-1.webp" alt="Australia">
             </a><div class="record-info">
                     <p class="pilot-name">ALBERT PARK <span class="flag">🇦🇺</span></p>
                     <p>Récord: 1:19.813</p>
@@ -239,5 +257,8 @@
     </footer>
 </body>
 </html>
+
+
+
 
 

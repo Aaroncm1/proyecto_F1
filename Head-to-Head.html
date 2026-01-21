@@ -2,18 +2,24 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script>
+        // Se ejecuta antes de cargar el body para evitar el flash blanco
+        const savedTheme = localStorage.getItem('f1-theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador Head-to-Head - F1</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         .comparison-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-        .pilot-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; border-top: 5px solid var(--color-acento); }
+        .pilot-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; border-top: 5px solid #e10600; }
         .stat-row { margin: 10px 0; padding: 12px; background: #f9f9f9; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
         .winner { background-color: #e8f5e9; border-left: 4px solid #4caf50; font-weight: bold; }
         .stat-label { font-size: 0.85em; color: #666; }
         .year-selector { text-align: center; margin-bottom: 20px; background: #f1f1f1; padding: 15px; border-radius: 8px; }
         select { padding: 10px; border-radius: 5px; width: 45%; font-family: 'Arial'; }
-        .badge-historic { background: gold; color: black; padding: 2px 8px; border-radius: 10px; font-size: 0.7em; font-weight: bold; }
+        .escuderia-text { color: #e10600; font-weight: bold; text-transform: uppercase; font-size: 0.85em; margin: 5px 0 15px 0; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -31,18 +37,33 @@
             </ul>
         </nav>
     </header>
+    <button class="theme-switch" onclick="toggleTheme()">🌓 Cambiar Modo</button>
+
+    <script>
+        function toggleTheme() {
+            const doc = document.documentElement;
+            const currentTheme = doc.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Aplicar el tema
+            doc.setAttribute('data-theme', newTheme);
+            
+            // Guardar la elección para todas las páginas
+            localStorage.setItem('f1-theme', newTheme);
+        }
+    </script>
 
     <div class="container">
-        <h2 style="text-align: center;">⚔️ Comparador: Leyendas vs Actualidad</h2>
+        <h2 style="text-align: center;">⚔️ COMPARADOR: HEAD-TO-HEAD</h2>
         
         <div class="year-selector">
             <label><strong>Modo de comparación:</strong></label><br>
             <select id="year-select" onchange="updatePilotLists()" style="width: 80%; margin-top: 10px;">
-                <option value="HISTORICO">🏆 MODO HISTÓRICO (Las 10 Leyendas)</option>
+                <option value="HISTORICO">🏆 MODO HISTÓRICO (Trayectoria Completa)</option>
             </select>
         </div>
 
-        <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; justify-content: space-between; gap: 10px;">
             <select id="pilot1-select" onchange="compare()"></select>
             <select id="pilot2-select" onchange="compare()"></select>
         </div>
@@ -54,10 +75,15 @@
 
     <script src="data.js"></script>
     <script>
-        // Cargar años + opción histórica
+        // Adaptación automática al nombre de tu variable de datos
+        const dataKey = typeof CLASIFICACION_PILOTOS !== 'undefined' ? CLASIFICACION_PILOTOS : (typeof f1_data !== 'undefined' ? f1_data : {});
+
+        // Cargar años al selector
         const yearSelect = document.getElementById('year-select');
-        Object.keys(f1_data).reverse().forEach(year => {
-            yearSelect.add(new Option(`Temporada ${year}`, year));
+        Object.keys(dataKey).reverse().forEach(year => {
+            if(year !== "HISTORICO") {
+                yearSelect.add(new Option(`Temporada ${year}`, year));
+            }
         });
 
         function updatePilotLists() {
@@ -73,10 +99,35 @@
                     p2Sel.add(new Option(pName, pName));
                 });
             } else {
-                f1_data[mode].forEach(p => {
+                dataKey[mode].forEach(p => {
                     p1Sel.add(new Option(p.piloto, p.piloto));
                     p2Sel.add(new Option(p.piloto, p.piloto));
                 });
+            }
+            document.getElementById('comparison-results').innerHTML = '<p style="grid-column: span 2; text-align: center; color: #888;">Elige dos pilotos para empezar el duelo.</p>';
+        }
+
+        function getFullData(name, mode) {
+            if (mode === "HISTORICO") {
+                const hData = PILOTOS_HISTORICOS[name];
+                return { 
+                    nombre: name, 
+                    titulos: hData.titulos || 0, 
+                    victorias: hData.victorias || 0,
+                    poles: hData.poles || 0,
+                    puntos: hData.puntos || 0,
+                    tipo: 'HISTORICO' 
+                };
+            } else {
+                const pYear = dataKey[mode].find(p => p.piloto === name);
+                return { 
+                    nombre: name, 
+                    pos: pYear.pos, 
+                    puntos: pYear.puntos, 
+                    escuderia: pYear.escuderia, 
+                    nacionalidad: pYear.nacionalidad,
+                    tipo: 'ANUAL'
+                };
             }
         }
 
@@ -90,69 +141,57 @@
             const p2 = getFullData(name2, mode);
 
             document.getElementById('comparison-results').innerHTML = `
-                ${renderCard(p1, p2)}
-                ${renderCard(p2, p1)}
+                ${renderCard(p1, p2, mode)}
+                ${renderCard(p2, p1, mode)}
             `;
         }
 
-        function getFullData(name, mode) {
-            // Si es leyenda, sacamos de PILOTOS_HISTORICOS, si no, del año y calculamos carrera
-            const hData = PILOTOS_HISTORICOS[name] || { victorias: 0, poles: 0, titulos: 0, puntos: 0 };
-            
-            // Si estamos en un año específico, buscamos los puntos de ese año
-            let yearPoints = 0;
-            if (mode !== "HISTORICO") {
-                const pYear = f1_data[mode].find(p => p.piloto === name);
-                yearPoints = pYear ? pYear.puntos : 0;
-            }
-
-            return {
-                nombre: name,
-                victorias: hData.victorias,
-                poles: hData.poles,
-                titulos: hData.titulos,
-                puntosTotales: hData.puntos,
-                puntosAño: yearPoints,
-                nacionalidad: hData.nacionalidad || "N/A",
-                escuderia: hData.escuderia || "N/A"
-            };
-        }
-
-        function renderCard(p, r) {
-            const isHistoric = yearSelect.value === "HISTORICO";
-            return `
-                <div class="pilot-card">
-                    <h3 style="color:var(--color-acento); margin-bottom:0;">${p.nombre}</h3>
-                    <p style="margin-top:5px; font-size:0.9em;">${p.escuderia}</p>
-                    
-                    ${!isHistoric ? `
-                        <div class="stat-row ${p.puntosAño > r.puntosAño ? 'winner' : ''}">
-                            <span class="stat-label">Puntos en ${yearSelect.value}</span>
-                            <span>${p.puntosAño}</span>
+        function renderCard(p, r, mode) {
+            if (p.tipo === 'ANUAL') {
+                return `
+                    <div class="pilot-card">
+                        <h3 style="color:#e10600; margin-bottom:0;">${p.nombre}</h3>
+                        <p class="escuderia-text">${p.escuderia}</p>
+                        <p style="font-weight:bold; color:#555; font-size:0.8em; margin-bottom:10px;">TEMPORADA ${mode}</p>
+                        <div class="stat-row ${p.pos < r.pos ? 'winner' : ''}">
+                            <span class="stat-label">📊 Posición Final</span>
+                            <span>${p.pos}º</span>
                         </div>
-                    ` : ''}
-                    
-                    <hr>
-                    <p style="font-weight:bold; color:#555; font-size:0.8em;">DATOS DE TODA SU CARRERA</p>
-
-                    <div class="stat-row ${p.titulos > r.titulos ? 'winner' : ''}">
-                        <span class="stat-label">🏆 Mundiales</span>
-                        <span>${p.titulos}</span>
+                        <div class="stat-row ${p.puntos > r.puntos ? 'winner' : ''}">
+                            <span class="stat-label">📈 Puntos</span>
+                            <span>${p.puntos}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">🌍 Nacionalidad</span>
+                            <span>${p.nacionalidad}</span>
+                        </div>
                     </div>
-                    <div class="stat-row ${p.victorias > r.victorias ? 'winner' : ''}">
-                        <span class="stat-label">🏁 Victorias</span>
-                        <span>${p.victorias}</span>
+                `;
+            } else {
+                return `
+                    <div class="pilot-card">
+                        <h3 style="color:#e10600; margin-bottom:0;">${p.nombre}</h3>
+                        <p class="escuderia-text">Leyenda de la F1</p>
+                        <p style="font-weight:bold; color:#555; font-size:0.8em; margin-bottom:10px;">DATOS HISTÓRICOS</p>
+                        <div class="stat-row ${p.titulos > r.titulos ? 'winner' : ''}">
+                            <span class="stat-label">🏆 Mundiales</span>
+                            <span>${p.titulos}</span>
+                        </div>
+                        <div class="stat-row ${p.victorias > r.victorias ? 'winner' : ''}">
+                            <span class="stat-label">🏁 Victorias</span>
+                            <span>${p.victorias}</span>
+                        </div>
+                        <div class="stat-row ${p.poles > r.poles ? 'winner' : ''}">
+                            <span class="stat-label">⏱️ Poles</span>
+                            <span>${p.poles}</span>
+                        </div>
+                        <div class="stat-row ${p.puntos > r.puntos ? 'winner' : ''}">
+                            <span class="stat-label">📈 Puntos Totales</span>
+                            <span>${p.puntos}</span>
+                        </div>
                     </div>
-                    <div class="stat-row ${p.poles > r.poles ? 'winner' : ''}">
-                        <span class="stat-label">⏱️ Poles</span>
-                        <span>${p.poles}</span>
-                    </div>
-                    <div class="stat-row ${p.puntosTotales > r.puntosTotales ? 'winner' : ''}">
-                        <span class="stat-label">📈 Puntos Totales</span>
-                        <span>${p.puntosTotales}</span>
-                    </div>
-                </div>
-            `;
+                `;
+            }
         }
 
         updatePilotLists();

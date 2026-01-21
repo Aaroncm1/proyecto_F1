@@ -1,233 +1,135 @@
-/* styles.css - Versión FINAL con Sistema de 3 Columnas para Constructores */
+/* styles.css - VERSIÓN FINAL RESTAURADA Y CORREGIDA */
 
 :root {
     --color-fondo: #f7f7f7;     
     --color-texto: #333333;     
-    --color-acento: #e10600;    /* Rojo F1 */
+    --color-acento: #e10600;    
     --color-gris: #cccccc;      
     --color-fila-clara: #ffffff;
-    --color-fila-oscura: #f0f0f0;
+    --color-card-bg: #ffffff;
+    --color-nav-bg: #ffffff;
     --color-podio-oro: #ffd700; 
     --color-podio-plata: #c0c0c0; 
     --color-podio-bronce: #cd7f32; 
 }
 
+[data-theme="dark"] {
+    --color-fondo: #121212;     
+    --color-texto: #e0e0e0;     
+    --color-acento: #ff1e17;    
+    --color-gris: #444444;      
+    --color-fila-clara: #1e1e1e;
+    --color-card-bg: #1e1e1e;
+    --color-nav-bg: #1a1a1a;
+    --color-podio-oro: #b8860b;    
+    --color-podio-plata: #717171;  
+    --color-podio-bronce: #8b4513; 
+}
+
 body {
-    font-family: 'Arial', 'Helvetica', sans-serif; 
+    font-family: 'Arial', sans-serif; 
     background-color: var(--color-fondo);
     color: var(--color-texto);
     margin: 0;
-    padding: 0;
-    line-height: 1.6;
 }
 
-/* --- Encabezado y Navegación --- */
-header {
-    background-color: var(--color-fila-clara);
-    color: var(--color-texto);
-    padding: 20px 0;
-    border-bottom: 3px solid var(--color-acento); 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 3em;
-    letter-spacing: 3px; 
-    text-transform: uppercase;
-    color: var(--color-acento);
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 15px 0 0 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: var(--color-texto);
+/* --- QUITAR AZUL DE LOS ENLACES --- */
+a {
+    color: inherit !important;
     text-decoration: none;
-    font-weight: bold;
-    padding: 5px 10px;
-    transition: all 0.3s;
 }
 
-nav ul li a:hover {
-    color: var(--color-fila-clara); 
-    background-color: var(--color-acento);
-    border-radius: 4px;
-}
-
-/* --- Contenedor Principal --- */
+/* --- CONTENEDOR ESTÁNDAR (Como antes) --- */
 .container {
     width: 90%;
     max-width: 1200px; 
-    margin: 40px auto;
-    padding: 30px;
+    margin: 20px auto;
+    padding: 20px;
     background-color: var(--color-fila-clara);
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-h2 {
-    color: var(--color-acento);
-    border-bottom: 2px solid var(--color-gris); 
-    padding-bottom: 10px;
-    text-transform: uppercase;
-    font-family: 'Arial Black', sans-serif;
-    text-align: center;
+/* --- GRÁFICA (Tamaño equilibrado) --- */
+.chart-panel {
+    width: 100%;
+    height: 500px; 
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-gris);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 30px;
 }
 
-/* --- NUEVO SISTEMA DE TARJETAS (3 POR FILA) --- */
+/* --- TARJETAS DE INICIO Y CIRCUITOS (RESTAURADAS) --- */
 .records-grid {
     display: grid;
-    /* FORZAMOS 3 COLUMNAS IGUALES PARA QUE QUEDEN 3 ARRIBA Y 3 ABAJO */
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin-top: 30px;
 }
 
 .record-card {
-    background-color: var(--color-fila-clara);
+    background-color: var(--color-card-bg);
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--color-gris);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
-.record-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
+.record-card:hover { transform: translateY(-10px); }
 
 .record-card img {
     width: 100%;
-    height: 250px;
+    height: 250px; /* Altura original de tus primeras fotos */
     object-fit: cover;
     border-bottom: 4px solid var(--color-acento);
-    background-color: #fff;
 }
 
-.record-info {
-    padding: 20px;
-    text-align: center;
+.record-info { padding: 15px; }
+
+/* --- TABLAS --- */
+table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+th { background-color: var(--color-acento); color: white; padding: 12px; }
+td { padding: 12px; border-bottom: 1px solid var(--color-gris); color: var(--color-texto); }
+
+/* --- COLORES PODIO --- */
+tr.p1 { background-color: var(--color-podio-oro) !important; color: black !important; }
+tr.p2 { background-color: var(--color-podio-plata) !important; color: black !important; }
+tr.p3 { background-color: var(--color-podio-bronce) !important; color: black !important; }
+
+[data-theme="dark"] tr.p1 td, [data-theme="dark"] tr.p2 td, [data-theme="dark"] tr.p3 td {
+    color: #fff !important; 
 }
 
-.pilot-name {
-    display: block;
-    font-size: 1.6em;
-    font-weight: 900; /* NEGRITA GRANDE */
-    color: var(--color-texto);
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    font-family: 'Arial Black', sans-serif;
+/* --- HEAD TO HEAD (RECUPERANDO EL VERDE) --- */
+.stat-row { 
+    margin: 10px 0; 
+    padding: 12px; 
+    background: rgba(0,0,0,0.05); 
+    display: flex; 
+    justify-content: space-between; 
 }
 
-.record-list {
-    list-style: none;
-    padding: 0;
-    text-align: left;
+[data-theme="dark"] .stat-row { background: #333 !important; }
+
+/* El color verde del ganador */
+.winner {
+    background-color: #e8f5e9 !important; /* Verde claro */
+    border-left: 4px solid #4caf50 !important;
+    font-weight: bold;
 }
 
-.record-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--color-fila-oscura);
-    font-size: 0.95em;
+[data-theme="dark"] .winner {
+    background-color: #1b3d20 !important; /* Verde oscuro para modo noche */
+    color: #afffa0 !important;
 }
 
-.record-list li strong {
-    color: var(--color-acento);
-}
-
-.record-list li:last-child {
-    border-bottom: none;
-}
-
-/* --- TABLAS (Por si las usas en otras páginas) --- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-}
-
-th {
-    background-color: var(--color-acento);
-    color: white;
-    padding: 12px;
-    text-transform: uppercase;
-}
-
-td {
-    padding: 12px;
-    border-bottom: 1px solid var(--color-gris);
-}
-
-tr.p1 { background-color: var(--color-podio-oro) !important; font-weight: bold; }
-tr.p2 { background-color: var(--color-podio-plata) !important; font-weight: bold; }
-tr.p3 { background-color: var(--color-podio-bronce) !important; font-weight: bold; }
-
-/* --- RESPONSIVIDAD (IMPORTANTE) --- */
-@media (max-width: 992px) {
-    .records-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablets */
-    }
-}
-
-@media (max-width: 650px) {
-    .records-grid {
-        grid-template-columns: 1fr; /* 1 sola columna en móviles */
-    }
-}
-@media (max-width: 768px) {
-    nav ul { flex-direction: column; }
-    table { display: block; overflow-x: auto; }
-}
-
-/* Divisor de secciones */
-.section-divider {
-    border: 0;
-    height: 2px;
-    background-image: linear-gradient(to right, transparent, var(--color-acento), transparent);
-    margin: 50px 0;
-    opacity: 0.5;
-}
-
-/* Quitar el color azul y el subrayado de los enlaces en las tablas */
-table td a {
-    color: #000000; /* Color negro puro */
-    text-decoration: none; /* Quita la línea de debajo */
-    font-weight: bold; /* Para que resalten un poco ya que son enlaces */
-}
-
-/* Opcional: Que se pongan rojos cuando pases el ratón por encima */
-table td a:hover {
-    color: var(--color-acento);
-    text-decoration: underline;
-}
-th:hover {
-    background-color: #b00500; /* Un rojo más oscuro al pasar el ratón */
-    transition: 0.3s;
-}
-
-th::after {
-    content: " ↕";
-    font-size: 0.8em;
-    opacity: 0.5;
-}
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+/* Otros */
+header { background-color: var(--color-nav-bg); padding: 20px; text-align: center; border-bottom: 3px solid var(--color-acento); }
+header h1 { color: var(--color-acento); margin: 0; text-transform: uppercase; font-size: 2.5em; }
+nav ul { list-style: none; padding: 0; margin-top: 15px; }
+nav ul li { display: inline; margin: 0 15px; }
+nav ul li a { font-weight: bold; }
+.theme-switch { position: fixed; bottom: 20px; right: 20px; background: var(--color-acento); color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; font-weight: bold; z-index: 1000; }
